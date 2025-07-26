@@ -1,10 +1,3 @@
-// lib/model/product_model.dart
-import 'dart:convert';
-
-Product productFromJson(String str) => Product.fromMap(json.decode(str));
-
-String productToJson(Product data) => json.encode(data.toMap());
-
 class Product {
   final int? id;
   final String title;
@@ -87,8 +80,4 @@ class Product {
       images: images ?? this.images,
     );
   }
-
-  static fromJson(newProductJson) {}
-
-  Object? toJson() {}
 }

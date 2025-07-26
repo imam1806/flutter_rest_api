@@ -1,15 +1,14 @@
 // lib/pages/order_history_page.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/dashboard/dashboard_page.dart'; // Import CartItem
 import 'package:get/get.dart'; // Impor GetX
 import 'package:flutter_application_1/controller/order_controller.dart'; // <--- Impor OrderController
 
 class OrderHistoryPage extends StatelessWidget {
   // Hapus final List<List<CartItem>> orderHistory;
   // Karena sekarang akan diambil dari controller
-    final OrderController orderController = Get.find();
+  final OrderController orderController = Get.find();
 
-   OrderHistoryPage({
+  OrderHistoryPage({
     super.key,
   }); // Hapus parameter orderHistory dari konstruktor
 

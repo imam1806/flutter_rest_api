@@ -11,10 +11,7 @@ import 'package:flutter_application_1/model/product_model.dart';
 import 'package:flutter_application_1/controller/product_controller.dart';
 import 'package:flutter_application_1/pages/dashboard/product_detail.dart';
 import 'package:flutter_application_1/pages/cart_page.dart';
-import 'package:flutter_application_1/pages/address_map_page.dart';
-import 'package:flutter_application_1/pages/order_history_page.dart';
 import 'package:flutter_application_1/controller/order_controller.dart'; // <--- Impor OrderController
-import 'package:flutter_application_1/pages/order_confirmation_page.dart'; // <--- Tambahkan impor ini
 
 // Definisi kelas CartItem (Bisa tetap di sini atau dipindahkan ke file model terpisah jika diinginkan)
 class CartItem {
@@ -39,9 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
   String _loginTime = 'Belum tersedia';
   File? _profileImage;
 
-  // Inisialisasi ProductController menggunakan Get.put()
   final ProductController productController = Get.find();
-  // Dapatkan instance OrderController
   final OrderController orderController = Get.find();
 
   // Daftar untuk menyimpan item yang saat ini ada di keranjang belanja
@@ -126,7 +121,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     // 2. Asumsi alamat dan metode pembayaran default
     // Anda bisa mengambil ini dari SharedPreferences atau profil pengguna yang sudah login
-    final String defaultPaymentMethod = 'Cash on Delivery (COD)';
+    const String defaultPaymentMethod = 'Cash on Delivery (COD)';
     // Pastikan AddressData diimpor jika Anda menggunakan ini
     final AddressData defaultAddress = AddressData(
       title:
@@ -134,7 +129,7 @@ class _DashboardPageState extends State<DashboardPage> {
       snippet: 'Jl. Contoh No. 123, Bekasi',
       latLng: const LatLng(-6.340583, 107.042056), // Contoh koordinat
     );
-    final double defaultShippingCost = 15000.0;
+    const double defaultShippingCost = 15000.0;
     final double orderTotalAmount =
         singleItemOrder[0].totalPrice + defaultShippingCost;
 
@@ -151,14 +146,14 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
 
-    // 5. Navigasi ke OrderConfirmationPage dan bersihkan stack navigasi
-    Get.offAll(
-      () => OrderConfirmationPage(
-        confirmedOrderItems: singleItemOrder,
-        deliveryAddress: defaultAddress,
-        paymentMethod: defaultPaymentMethod,
-        totalAmount: orderTotalAmount,
-      ),
+    Get.offAllNamed(
+      '/order_confirmation_page',
+      arguments: [
+        singleItemOrder,
+        defaultAddress,
+        defaultPaymentMethod,
+        orderTotalAmount,
+      ],
     );
   }
   // --- Akhir Fungsi Pembelian Langsung ---
@@ -202,13 +197,6 @@ class _DashboardPageState extends State<DashboardPage> {
           ).textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _navigateToProductDetail(),
-            icon: const Icon(Icons.add_box),
-            color: Colors.white,
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -232,7 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Text(
                     "Temukan berbagai produk menarik di sini!",
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       fontSize: 16,
                     ),
                   ),
@@ -240,7 +228,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Text(
                     "Login terakhir: $_loginTime",
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontSize: 14,
                     ),
                   ),
@@ -459,7 +447,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           _drawerTile(
             icon: Icons.shopping_cart,
-            title: 'Keranjang (${cartItemCount})',
+            title: 'Keranjang ($cartItemCount)',
             onTap: _navigateToCart,
           ),
           _drawerTile(
@@ -467,7 +455,7 @@ class _DashboardPageState extends State<DashboardPage> {
             title: 'Alamat',
             onTap: () {
               Navigator.pop(context);
-              Get.to(() => const AddressMapPage());
+              Get.toNamed('/address_map_page');
             },
           ),
           // Gunakan Obx untuk memperbarui jumlah pesanan secara reaktif
@@ -478,8 +466,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   'Pesanan (${orderController.orderHistory.length})', // <--- Ambil dari controller
               onTap: () {
                 Navigator.pop(context); // Tutup drawer
-                Get.to(
-                  () => OrderHistoryPage(),
+                Get.toNamed(
+                  '/order_history_page',
                 ); // <--- Navigasi tanpa meneruskan argumen
               },
             ),
@@ -510,7 +498,4 @@ class _DashboardPageState extends State<DashboardPage> {
   }) {
     return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
   }
-
-  void _showAddPostDialog() {} // Metode ini tidak lagi digunakan.
-  void _removeCustomPost(String id) {} // Metode ini tidak lagi digunakan.
 }

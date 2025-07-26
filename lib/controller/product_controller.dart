@@ -1,4 +1,3 @@
-// lib/controller/product_controller.dart
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart'; // Untuk Colors dan SnackBar di Get.snackbar
@@ -29,6 +28,9 @@ class ProductController extends GetxController {
       final response = await http.get(
         Uri.parse('$url/products?skip=0&limit=10'),
       ); // Ambil 10 produk
+
+      log(response.body.toString());
+
       if (response.statusCode == 200) {
         // Periksa apakah berhasil
         final data = jsonDecode(response.body); // Dekode respons JSON
@@ -63,6 +65,9 @@ class ProductController extends GetxController {
       final response = await http.get(
         Uri.parse('$url/products/$id'),
       ); // Ambil produk tunggal berdasarkan ID
+
+      log(response.body.toString());
+
       if (response.statusCode == 200) {
         // Periksa apakah berhasil
         final data = jsonDecode(response.body); // Dekode respons JSON
@@ -98,9 +103,13 @@ class ProductController extends GetxController {
       final response = await http.post(
         // Permintaan POST untuk menambahkan produk
         Uri.parse('$url/products/add'),
-        body: newProduct.toMap(),
+        headers: {
+          'Content-Type': 'application/json', // <- penting
+        },
+        body: jsonEncode(newProduct.toMap()),
       );
 
+      log(response.statusCode.toString());
       log(response.body.toString());
 
       if (response.statusCode == 200 || response.statusCode == 201) {

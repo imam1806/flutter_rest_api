@@ -15,7 +15,6 @@ class AddressMapPage extends StatefulWidget {
 
 class _AddressMapPageState extends State<AddressMapPage> {
   final Completer<GoogleMapController> _completer = Completer();
-  GoogleMapController? _mapController;
 
   // Posisi RUMAH (menggunakan koordinat yang Anda berikan, diubah ke desimal)
   final CameraPosition _homePosition = const CameraPosition(
@@ -28,15 +27,13 @@ class _AddressMapPageState extends State<AddressMapPage> {
 
   // Posisi STMIK Bani Saleh (berdasarkan PDF)
   final CameraPosition _stmikPosition = const CameraPosition(
-    target: LatLng(
-      -6.25217079640056,
-      107.00269487400477,
-    ),
+    target: LatLng(-6.25217079640056, 107.00269487400477),
     zoom: 18.0,
   );
 
   final RxSet<Marker> _markers = RxSet<Marker>();
-  AddressData? _selectedAddress; // Menyimpan alamat yang saat ini dipilih/ditampilkan
+  AddressData?
+  _selectedAddress; // Menyimpan alamat yang saat ini dipilih/ditampilkan
 
   @override
   void initState() {
@@ -76,14 +73,15 @@ class _AddressMapPageState extends State<AddressMapPage> {
     // Update alamat yang dipilih
     _selectedAddress = AddressData(
       title: title ?? 'Lokasi Dipilih',
-      snippet: snippet ?? 'Koordinat: ${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}',
+      snippet:
+          snippet ??
+          'Koordinat: ${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}',
       latLng: position,
     );
   }
 
   void _onMapCreated(GoogleMapController controller) {
     _completer.complete(controller);
-    _mapController = controller;
   }
 
   Future<void> _goToHome() async {
@@ -186,7 +184,8 @@ class _AddressMapPageState extends State<AddressMapPage> {
         markerId: 'tappedLocation',
         position: latLng,
         title: 'Lokasi Dipilih',
-        snippet: 'Lat: ${latLng.latitude.toStringAsFixed(4)}, Lng: ${latLng.longitude.toStringAsFixed(4)}',
+        snippet:
+            'Lat: ${latLng.latitude.toStringAsFixed(4)}, Lng: ${latLng.longitude.toStringAsFixed(4)}',
         hue: BitmapDescriptor.hueOrange, // Warna oranye untuk lokasi yang ditap
       );
     });
@@ -219,7 +218,7 @@ class _AddressMapPageState extends State<AddressMapPage> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: const [
                     BoxShadow(
@@ -267,7 +266,9 @@ class _AddressMapPageState extends State<AddressMapPage> {
               child: SafeArea(
                 child: Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -276,7 +277,10 @@ class _AddressMapPageState extends State<AddressMapPage> {
                       children: [
                         const Text(
                           'Lokasi Terpilih:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         const SizedBox(height: 5),
                         Text(
@@ -284,18 +288,26 @@ class _AddressMapPageState extends State<AddressMapPage> {
                           style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          _selectedAddress?.snippet ?? 'Ketuk pada peta atau pilih opsi di bawah.',
-                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          _selectedAddress?.snippet ??
+                              'Ketuk pada peta atau pilih opsi di bawah.',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: _selectedAddress != null
-                                ? () {
-                                    Navigator.pop(context, _selectedAddress); // Kembali dengan data alamat
-                                  }
-                                : null,
+                            onPressed:
+                                _selectedAddress != null
+                                    ? () {
+                                      Navigator.pop(
+                                        context,
+                                        _selectedAddress,
+                                      ); // Kembali dengan data alamat
+                                    }
+                                    : null,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,

@@ -7,10 +7,9 @@ import 'package:flutter_application_1/pages/dashboard/product_detail.dart';
 import 'package:flutter_application_1/pages/address_map_page.dart';
 import 'package:flutter_application_1/pages/order_confirmation_page.dart';
 import 'package:flutter_application_1/pages/order_history_page.dart';
-import 'package:flutter_application_1/controller/order_controller.dart'; // <--- Impor OrderController
+import 'package:flutter_application_1/controller/order_controller.dart';
 
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,12 +30,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => const LoginPage()),
         GetPage(name: '/dashboard', page: () => const DashboardPage()),
         GetPage(name: '/profile', page: () => const ProfilePage()),
-        GetPage(name: '/product_detail', page: () => ProductDetail()),
         GetPage(name: '/address_map_page', page: () => const AddressMapPage()),
-
-        // Halaman CartPage dan CheckoutPage tidak didefinisikan di sini
-        // karena mereka dipanggil dengan MaterialPageRoute dan callback
-        // dari DashboardPage.
+        GetPage(name: '/order_history_page', page: () => OrderHistoryPage()),
+        GetPage(name: '/product_detail', page: () => ProductDetail()),
         GetPage(
           name: '/order_confirmation_page',
           page: () {
@@ -52,8 +48,6 @@ class MyApp extends StatelessWidget {
             return const Text('Error: Order details not found.');
           },
         ),
-        // OrderHistoryPage tidak lagi memerlukan argumen karena mengambil dari OrderController
-        GetPage(name: '/order_history_page', page: () => OrderHistoryPage()),
       ],
       initialBinding: BindingsBuilder(() {
         Get.put(OrderController());

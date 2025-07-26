@@ -50,99 +50,11 @@ class ProductDetail extends StatelessWidget {
       text: initialProduct?.thumbnail,
     );
 
-    Future<void> saveProduct() async {
-      final productToSave = Product(
-        title: titleController.text.trim(),
-        description: descriptionController.text.trim(),
-        price: double.tryParse(priceController.text.trim()) ?? 0.0,
-        discountPercentage:
-            double.tryParse(discountController.text.trim()) ?? 0.0,
-        rating:
-            initialProduct?.rating ?? 0.0, // Retain original rating or default
-        stock: int.tryParse(stockController.text.trim()) ?? 1,
-        brand: brandController.text.trim(),
-        category: categoryController.text.trim(),
-        thumbnail: thumbnailController.text.trim(),
-        images:
-            initialProduct?.images ??
-            [], // Retain original images or empty list
-      );
-
-      dynamic result;
-      if (initialProduct == null) {
-        // Add new product
-        result = await controller.addProduct(productToSave);
-      } else {
-        // Update existing product
-        result = await controller.updateProduct(productToSave);
-      }
-    
-      if (result != null) {
-        Get.back(); // Go back after successful save
-      }
-      // Snackbar messages are handled directly in ProductController
-    }
-
-    Future<void> deleteProduct() async {
-      if (initialProduct != null) {
-        // Show confirmation dialog before deleting
-        final bool? confirmDelete = await Get.dialog<bool>(
-          AlertDialog(
-            title: const Text('Konfirmasi Hapus'),
-            content: Text(
-              'Anda yakin ingin menghapus produk "${initialProduct!.title}"?',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Get.back(result: false),
-                child: const Text('Batal'),
-              ),
-              ElevatedButton(
-                onPressed: () => Get.back(result: true),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                child: const Text(
-                  'Hapus',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        );
-
-        if (confirmDelete == true) {
-          final result = await controller.deleteProduct(
-            initialProduct!.id!,
-          ); // Delete product
-          if (result != null) {
-            Get.back(); // Go back after successful deletion
-          }
-          // Snackbar messages are handled directly in ProductController
-        }
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          initialProduct == null ? 'Tambah Produk Baru' : 'Detail Produk',
-        ),
+        title: const Text('Detail Produk'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
-        actions: [
-          if (initialProduct !=
-              null) // Show delete button only for existing products
-            IconButton(
-              onPressed: deleteProduct,
-              icon: const Icon(Icons.delete),
-              tooltip: 'Hapus Produk',
-            ),
-          IconButton(
-            onPressed: saveProduct, // Save button in the app bar
-            icon: const Icon(Icons.save),
-            tooltip:
-                initialProduct == null ? 'Tambah Produk' : 'Simpan Perubahan',
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

@@ -150,8 +150,8 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide.none, // No border line
                     ),
                     filled: true,
-                    fillColor: Colors.lightBlue.shade50.withOpacity(
-                      0.5,
+                    fillColor: Colors.lightBlue.shade50.withValues(
+                      alpha: 0.5,
                     ), // Light background color
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 18,
@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Colors.lightBlue.shade50.withOpacity(0.5),
+                    fillColor: Colors.lightBlue.shade50.withValues(alpha: 0.5),
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 18,
                       horizontal: 15,
